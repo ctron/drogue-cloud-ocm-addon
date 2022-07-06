@@ -1,0 +1,8 @@
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: ClusterManagementAddOn
+metadata:
+  name: drogue-cloud
+spec:
+  addOnMeta:
+    displayName: drogue-cloud
+    description: "Drogue IoT cloud addon"

@@ -1,0 +1,14 @@
+{{- $ref := dict "root" . "name" "drogue-cloud-addon" "component" "addon" -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: drogue-cloud-addon
+  labels:
+    {{- include "drogue-cloud-ocm-addon.labels" $ref | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: drogue-cloud-addon
+subjects:
+  - kind: ServiceAccount
+    name: drogue-cloud-addon

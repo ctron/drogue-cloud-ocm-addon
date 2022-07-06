@@ -1,0 +1,36 @@
+{{- $ref := dict "root" . "name" "drogue-cloud-addon-controller" "component" "addon" -}}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: drogue-cloud-addon-controller
+  labels:
+    {{- include "drogue-cloud-ocm-addon.labels" $ref | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "drogue-cloud-ocm-addon.selectorLabels" $ref | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "drogue-cloud-ocm-addon.labels" $ref | nindent 8 }}
+    spec:
+      serviceAccountName: drogue-cloud-addon
+      containers:
+        - name: controller
+          image: quay.io/ctrontesting/drogue-cloud-ocm-addon:latest
+          imagePullPolicy: Always
+          args:
+            - "/drogue-cloud-ocm-addon"
+            - "controller"
+          env:
+            - name: DROGUE__APPLICATION
+              value: ctron-opcua
+            - name: DROGUE__API__URL
+              value: https://api-drogue-dev.apps.wonderful.iot-playground.org
+            - name: DROGUE__MQTT_INTEGRATION__URL
+              value: ssl://mqtt-integration-drogue-dev.apps.wonderful.iot-playground.org:443
+            - name: DROGUE__USERNAME
+              value: ctron
+            - name: DROGUE__TOKEN
+              value: drg_PHDTw8_VRqiKgr358fBy47a8YAN4KuQQmlUTs1mkR4
